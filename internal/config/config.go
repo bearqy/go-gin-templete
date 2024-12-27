@@ -11,17 +11,17 @@ import (
 
 type Config struct {
 	Log struct {
-		Level string
-	}
+		Level string `yaml:"level"`
+	} `yaml:"log"`
 	Web struct {
-		Address string
-	}
+		Address string `yaml:"address"`
+	} `yaml:"web"`
 	DB struct {
-		ConnStr string
-	}
+		ConnStr string `yaml:"conn_str"`
+	} `yaml:"db"`
 	Job map[string]struct {
-		Cron string
-	}
+		Cron string `yaml:"cron"`
+	} `yaml:"job"`
 }
 
 var Main = &Config{}
@@ -38,6 +38,6 @@ func Init() error {
 		slog.Error("yaml unmarshal error", slog.Any("error", err))
 		return err
 	}
-
+	slog.Info("load config successfully", slog.Any("config", Main))
 	return nil
 }

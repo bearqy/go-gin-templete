@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	Register("aaa", aaa)
+	//Register("aaa", aaa)
 }
 
 func aaa() {

@@ -47,6 +47,7 @@ func Run(ctx context.Context, router func(gin.IRouter)) {
 	}
 
 	go func() {
+		slog.Info("应用启动成功", "addr", server.Addr)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			slog.Error("listen error", slog.Any("error", err))
 			os.Exit(5)

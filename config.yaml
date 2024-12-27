@@ -1,12 +1,13 @@
 db:
-  connString: "root:123@/test?charset=utf8"
+#  conn_str: "root:123@/test?charset=utf8"
 
-server:
-  addr: ":8080"
+web:
+  address: ":8080"
 
 log:
   level: "info"
 
+# 精确到秒
 job:
-  jobname:
-    cron: "* * * * *"
+#  jobname:
+#    cron: "* * * * * *"
