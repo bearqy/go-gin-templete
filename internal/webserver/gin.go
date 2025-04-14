@@ -1,4 +1,4 @@
-package web
+package webserver
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/bearqy/go-gin-templete/internal/config"
-	"github.com/bearqy/go-gin-templete/internal/logger"
+	"go-gin-templete/internal/config"
+	"go-gin-templete/internal/logger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -23,21 +23,23 @@ func Run(ctx context.Context, router func(gin.IRouter)) {
 
 	g.Use(gin.Recovery())
 
+	g.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: logger.AccessFile}))
+
 	g.Any("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "OK")
 	})
 	g.Any("/metrics", func(c *gin.Context) {
 		promhttp.Handler().ServeHTTP(c.Writer, c.Request)
 	})
-	g.Any("/_/setlevel/:level", func(c *gin.Context) {
-		level := c.Param("level")
-		oldLevel := logger.SetLevel(level)
-		if oldLevel == "" {
-			c.String(400, "error log level")
-			return
-		}
-		c.String(http.StatusOK, oldLevel)
-	})
+	//g.Any("/_/setlevel/:level", func(c *gin.Context) {
+	//	level := c.Param("level")
+	//	oldLevel := logger.SetLevel(level)
+	//	if oldLevel == "" {
+	//		c.String(400, "error log level")
+	//		return
+	//	}
+	//	c.String(http.StatusOK, oldLevel)
+	//})
 
 	router(&g.RouterGroup)
 

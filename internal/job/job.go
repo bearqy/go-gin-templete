@@ -3,7 +3,7 @@ package job
 import (
 	"log/slog"
 
-	"github.com/bearqy/go-gin-templete/internal/config"
+	"go-gin-templete/internal/config"
 
 	"github.com/robfig/cron/v3"
 )

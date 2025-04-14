@@ -1,17 +1,19 @@
 package config
 
 import (
+	"go-gin-templete/docs"
 	"log/slog"
 	"os"
 
-	"github.com/bearqy/go-gin-templete/internal/cli"
-
+	"go-gin-templete/internal/cli"
 	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
 	Log struct {
-		Level string `yaml:"level"`
+		Level          string `yaml:"level"`
+		AccessLogfile  string `yaml:"accessLogfile"`
+		RuntimeLogfile string `yaml:"runtimeLogfile"`
 	} `yaml:"log"`
 	Web struct {
 		Address string `yaml:"address"`
@@ -40,4 +42,14 @@ func Init() error {
 	}
 	slog.Info("load config successfully", slog.Any("config", Main))
 	return nil
+}
+
+func InitSwagger() {
+	docs.SwaggerInfo.Title = "Ares"
+	docs.SwaggerInfo.Version = "v1.x"
+	docs.SwaggerInfo.Description = "天天拍车发布引擎"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	docs.SwaggerInfo.Host = ""
+	docs.SwaggerInfo.BasePath = ""
+	slog.Info("swagger config successfully")
 }
