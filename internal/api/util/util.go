@@ -72,28 +72,64 @@ func (p *ParamPage) GetSortSqlDemo(mapping map[string]string) string {
 	return fmt.Sprintf("%s %s", field, direction)
 }
 
-type ResponseTemplate struct {
-	Code   int    `json:"code"`   //此处约定：1代表成功，0代表失败
-	Msg    string `json:"msg"`    //对请求结果的描述消息，可以为空
-	Result any    `json:"result"` //如果请求成功，这里给出成功的结果
-	Error  any    `json:"error"`  //如果请求失败，这里一定要给出错误的信息
-	Help   string `json:"help"`   //显示接口文档地址，便于别人排错
+type APIResponse struct {
+	Data any `json:"data,omitempty"` // 成功时返回业务数据
+	Meta any `json:"meta,omitempty"` // 列表分页、游标等响应元信息
 }
 
-func ResponseSuccessful(msg string, result any) ResponseTemplate {
-	return ResponseTemplate{
-		Code:   1,
-		Msg:    msg,
-		Result: result, //响应成功要把result附上
-		Help:   "暂不提供帮助信息",
+type ErrorResponse struct {
+	Error ErrorDetail `json:"error"`
+}
+
+type ErrorDetail struct {
+	Code    string `json:"code"`              // 机器可读错误码，例如 invalid_argument
+	Message string `json:"message"`           // 人类可读错误描述
+	Details any    `json:"details,omitempty"` // 可选的错误上下文
+}
+
+func ResponseSuccessful(data any) APIResponse {
+	return Success(data)
+}
+
+func ResponseFailure(message string, err any) ErrorResponse {
+	return Failure("request_failed", message, err)
+}
+
+func Success(data any) APIResponse {
+	return APIResponse{
+		Data: data,
 	}
 }
 
-func ResponseFailure(msg string, error any) ResponseTemplate {
-	return ResponseTemplate{
-		Code:  0,
-		Msg:   msg,
-		Error: error, //响应失败要把error附上
-		Help:  "暂不提供帮助信息",
+func SuccessWithMeta(data any, meta any) APIResponse {
+	return APIResponse{
+		Data: data,
+		Meta: meta,
 	}
+}
+
+func Failure(code string, message string, details any) ErrorResponse {
+	if code == "" {
+		code = "internal_error"
+	}
+	if message == "" {
+		message = "request failed"
+	}
+	return ErrorResponse{
+		Error: ErrorDetail{
+			Code:    code,
+			Message: message,
+			Details: normalizeError(details),
+		},
+	}
+}
+
+func normalizeError(err any) any {
+	if err == nil {
+		return nil
+	}
+	if e, ok := err.(error); ok {
+		return e.Error()
+	}
+	return err
 }

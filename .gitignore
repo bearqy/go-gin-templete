@@ -1,36 +1,58 @@
-### gitignore template
-.idea
-vue/.idea
-vue/node_modules
+### macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+*.icloud
+
+### JetBrains / GoLand
+.idea/
 *.iml
-*.log
+*.iws
+.idea_modules/
+
+### Cursor / local editor state
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+!.cursorignore
+
+### Local environment
+.env
+.env.*
+!.env.example
+venv/
+env/
+.venv/
+
+### Dependencies
+node_modules/
+vue/node_modules/
+
+### Build artifacts
+build/
+dist/
+out/
+gen/
 *.tgz
-*/*.tgz
+*.tar.gz
+
+### Logs and temporary files
+*.log
+log/
+logs/
+tmp/
+tmp_logs/
+lastupdate.tmp
+
+### Databases and local data
 *.db
-./config/*.db
 *.sqlite
 *.sqlite3
-out
-gen
-tmp_logs
-tmp
-logs
-log
-cmd
-venv
-env
-build
-.venv
-.env
-*.tar.gz
-lastupdate.tmp
-GoMessage
-*prof
-.DS_Store
-data
-data/*.db
-data/*.log
-tmp
-tmp/
-tmp/*
+/config/*.db
+data/
 
+### Go profiling / local binaries
+*.prof
+*prof

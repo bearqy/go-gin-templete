@@ -1,0 +1,12 @@
+.git
+.github
+.cursor
+bin
+build
+log
+logs
+tmp
+*.log
+*.db
+.DS_Store
+README.md

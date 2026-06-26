@@ -1,19 +1,10 @@
 definitions:
-  util.ResponseTemplate:
+  util.APIResponse:
     properties:
-      code:
-        description: 此处约定：1代表成功，0代表失败
-        type: integer
-      error:
-        description: 如果请求失败，这里一定要给出错误的信息
-      help:
-        description: 显示接口文档地址，便于别人排错
-        type: string
-      msg:
-        description: 对请求结果的描述消息，可以为空
-        type: string
-      result:
-        description: 如果请求成功，这里给出成功的结果
+      data:
+        description: 成功时返回业务数据
+      meta:
+        description: 列表分页、游标等响应元信息
     type: object
 info:
   contact: {}
@@ -25,11 +16,9 @@ paths:
           description: 成功
           schema:
             allOf:
-            - $ref: '#/definitions/util.ResponseTemplate'
+            - $ref: '#/definitions/util.APIResponse'
             - properties:
-                code:
-                  type: integer
-                result:
+                data:
                   type: string
               type: object
       summary: 健康检测

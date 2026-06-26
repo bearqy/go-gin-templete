@@ -1,8 +1,16 @@
 db:
-#  conn_str: "root:123@/test?charset=utf8"
+  # 留空时跳过数据库初始化。
+  # conn_str: "root:123@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=true&loc=Local"
+  conn_str: ""
+  max_open_conns: 25
+  max_idle_conns: 5
+  conn_max_lifetime_second: 300
 
 web:
   address: ":8080"
+  read_timeout_second: 10
+  write_timeout_second: 30
+  idle_timeout_second: 60
 
 log:
   level: "info"
@@ -11,5 +19,5 @@ log:
 
 # 精确到秒
 job:
-#  jobname:
-#    cron: "* * * * * *"
+  # demo:
+  #   cron: "0 */5 * * * *"

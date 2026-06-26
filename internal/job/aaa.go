@@ -4,10 +4,10 @@ import (
 	"go-gin-templete/internal/home"
 )
 
-func init() {
-	//Register("aaa", aaa)
+func RegisterDefaults() {
+	Register("demo", demo)
 }
 
-func aaa() {
+func demo() {
 	home.HomeJob()
 }

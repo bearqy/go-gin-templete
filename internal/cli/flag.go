@@ -2,21 +2,27 @@ package cli
 
 import (
 	"flag"
+	"os"
 )
 
 // ConfigFilePath 默认读取的配置文件路径
-var ConfigFilePath = "default.yaml"
+var ConfigFilePath = "config/default.yaml"
 
 func Init() {
-	// 获取当前执行文件的路径
-	//execPath, err := os.Executable()
-	//if err != nil {
-	//	panic(err)
-	//}
-	//execDir := filepath.Dir(execPath)
+	configFilePath, err := Parse(os.Args[1:])
+	if err != nil {
+		flag.CommandLine.Parse(os.Args[1:])
+		return
+	}
+	ConfigFilePath = configFilePath
+}
 
-	// 自定义配置文件路径，会覆盖默认的配置
-	//defaultConfigPath := filepath.Join(execDir, "config/default.yaml")
-	flag.StringVar(&ConfigFilePath, "config", "config/default.yaml", "配置文件路径")
-	flag.Parse()
+func Parse(args []string) (string, error) {
+	fs := flag.NewFlagSet("server", flag.ContinueOnError)
+	configFilePath := ConfigFilePath
+	fs.StringVar(&configFilePath, "config", ConfigFilePath, "配置文件路径")
+	if err := fs.Parse(args); err != nil {
+		return "", err
+	}
+	return configFilePath, nil
 }
